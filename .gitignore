@@ -1,3 +1,6 @@
 data/**
 .env
 config.py
+*.pyc
+.chroma
+__pycache__
