@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 pinecone-client = "^2.2.2"
-langchain = "^0.0.201"
+langchain = "^0.0.234"
 openai = "^0.27.8"
 wikipedia = "^1.4.0"
 google-api-python-client = "^2.89.0"
@@ -24,6 +24,8 @@ chromadb = "^0.3.26"
 arxiv = "^1.4.7"
 pypdf = "^3.12.0"
 geopandas = "^0.13.2"
+streamlit = "^1.24.1"
+transformers = "^4.31.0"
 
 
 [tool.poetry.group.dev.dependencies]
