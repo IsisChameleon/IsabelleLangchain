@@ -1,0 +1,8 @@
+{
+    "python.defaultInterpreterPath": "/workspaces/IsabelleLangchain/.venv/bin/python",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.analysis.extraPaths": [
+        "./src/ndis/modules",
+        "./src/ndis/modules"
+    ]
+}

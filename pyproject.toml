@@ -30,6 +30,7 @@ duckduckgo-search = "^3.8.4"
 pdfplumber = "^0.10.2"
 aioboto3 = "^11.3.0"
 deeplake = "^3.6.21"
+streamlit-chat = "^0.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
