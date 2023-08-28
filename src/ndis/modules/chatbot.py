@@ -1,21 +1,25 @@
-import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.callbacks import get_openai_callback
 from modules.memory import AnswerConversationBufferMemory
 from modules.retriever import ChromaRetriever
 from modules.prompts import CombineChainPrompt
+from dotenv import load_dotenv
 
-#fix Error: module 'langchain' has no attribute 'verbose'
-import langchain
-langchain.verbose = False
+# #fix Error: module 'langchain' has no attribute 'verbose'
+# import langchain
+# langchain.verbose = False
+
+COLLECTION_NAME = 'NDIS_ALL_PDFPLUMBER_TEXTS_1024_128'
 
 class Chatbot:
 
-    def __init__(self, model_name, temperature, collection_name=None):
+    def __init__(self, model_name, temperature, collection_name=COLLECTION_NAME):
         self.model_name = model_name
         self.temperature = temperature
         self.retriever = ChromaRetriever().fromExistingCollection(collection_name=collection_name)
+
+        print(f'Chatbot initialized with {model_name}, temperature {self.temperature} and retriever {self.retriever}')
 
     @staticmethod
     def process_response(res):
@@ -58,7 +62,6 @@ class Chatbot:
         # result = conversational_qa_chain(chain_input)
         answer, source_documents = self.send_query(prompt=query, chain=conversational_qa_chain)
 
-        st.session_state["history"].append((query, answer))
         #count_tokens_chain(chain, chain_input)
         return answer
 
@@ -66,5 +69,4 @@ class Chatbot:
 def count_tokens_chain(chain, query):
     with get_openai_callback() as cb:
         result = chain.run(query)
-        st.write(f'###### Tokens used in this conversation : {cb.total_tokens} tokens')
-    return result 
+    return result, cb.total_tokens 

@@ -5,7 +5,6 @@ from chromadb import Client
 from chromadb.api import API
 
 class ChromaRetriever:
-    COLLECTION_NAME = 'NDIS_ALL_PDFPLUMBER_TEXTS_1024_128'
     
     def __init__(self,  client_settings=None):
         localhost_client_settings = Settings(
@@ -15,11 +14,15 @@ class ChromaRetriever:
         )
         
         self.client_settings: Settings = client_settings or localhost_client_settings
-        self.client: API = Client(client_settings)
-
-        print(self.client.heartbeat())
+        self.client: API = Client(self.client_settings)
         
-    def fromExistingCollection(self, collection_name: str=COLLECTION_NAME, k: int=5):
+    def fromExistingCollection(self, collection_name: str, k: int=5):
+        
+        # check collection exists
+        if (self.client.get_collection(name=collection_name, embedding_function=OpenAIEmbeddings()) is None):
+            raise ValueError(f'Chroma collection: {collection_name} does not exist')
+        
+        print('Chroma collection name:', collection_name)
         self.chromaDb = Chroma(
             collection_name, 
             embedding_function=OpenAIEmbeddings(),
@@ -30,6 +33,7 @@ class ChromaRetriever:
         self.retriever.search_kwargs["fetch_k"] =k
         self.retriever.search_kwargs["maximal_marginal_relevance"] = True
         self.retriever.search_kwargs["k"] = k  
+        return self.retriever
         
         '''
         Note about maximal relevance search:
